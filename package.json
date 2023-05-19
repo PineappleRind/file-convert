@@ -1,0 +1,11 @@
+{
+  "name": "file-convert-api",
+  "module": "index.ts",
+  "devDependencies": {
+    "bun-types": "^0.6.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "hono": "^3.1.8"
+  }
+}

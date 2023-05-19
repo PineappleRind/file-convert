@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>file-convert-api usage</title>
+    <style>
+        * {
+            font-family: PT Mono, monospace;
+            margin: 0;
+        }
+        body {
+            background: #220011;
+            color: #ffe4f2;
+            padding-top: min(10vw, 200px);
+            line-height: 1.2;
+        }
+        main {
+            margin: auto;
+            border: 1px solid rgb(255,255,255,0.2);
+            background: rgb(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 40px;
+            width: clamp(400px, 70vw, 900px)
+        }
+        .dim {
+            color: #eebdd7;
+        }
+        .dimmer {
+            color: #a8688a;
+        }
+        .accent {
+            color: #ff0e8e;
+        }
+        .smaller {
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7em;
+            font-style: italic;
+            color: #7b4060;
+            font-weight: 200;
+            margin-top: 40px;
+        }
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>file-convert-api <small class="dim" style="font-weight: 200">v0</small></h1>
+        <br>
+        <p>
+            <span class="dimmer">/<span class="accent">convert</span>/:<span class="dim">ext</span></span> <span class="dimmer">·</span> <span
+                class="dimmer smaller">Append a file. Responds with an ID.
+                You can use this for a request to
+                /status</span>
+        </p>
+        <p>
+            <span class="dimmer">/<span class="accent">status</span>/:<span class="dim">id</span></span> <span class="dimmer">·</span> <span
+                class="dimmer smaller">Responds with JSON containing status,
+                id, and percent fields. If
+                complete, responds with a newly created URL to the file, which expires after 6 hours.</span>
+        </p>
+    </main>
+    <footer>PineappleRind 2023</footer>
+</body>
+
+</html>
