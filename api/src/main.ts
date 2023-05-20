@@ -1,11 +1,17 @@
 import { Hono } from "hono";
-import routes from "./routes";
+import { serveStatic } from "hono/bun";
+import { cors } from "hono/cors";
 import { join } from "path";
 import { file } from "bun";
 
+import routes from "./routes";
+console.log(process.cwd())
 const app = new Hono();
+app.use("/*", cors({ origin: "*" }));
+app.use("/converted/*", serveStatic({ root: "./api/"}))
 app.get("/status/:id", routes.status);
-app.get("/convert/:ext", routes.convert);
+app.get("/valid-conversions", routes.validConversions);
+app.post("/convert/:ext/:targetExt", routes.convert);
 app.get("/", async (c) => {
     return new Response(await file(Bun.fileURLToPath(new URL(join(import.meta.url, "../../docs/index.html")))).text(), {
         headers: {
@@ -14,4 +20,6 @@ app.get("/", async (c) => {
     })
 })
 
-Bun.serve({ ...app, port: 8000 })
+const port = process.env.PORT || 8000;
+console.log(`Running file-convert-api on port ${port}...`);
+Bun.serve({ ...app, port });

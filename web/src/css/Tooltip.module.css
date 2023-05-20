@@ -1,0 +1,27 @@
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip-text);
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.99;
+    background: var(--accent);
+    border: var(--border-accent);
+    padding: 4px 8px;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    translate: -50% 1px;
+    transition: 0.2s;
+}
+
+.tooltip:hover::after {
+    pointer-events: all;
+    opacity: 1;
+    scale: 1;
+    translate: -50% 0px;
+}

@@ -1,0 +1,19 @@
+.button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background: var(--accent);
+    border: 0;
+    font-weight: 600;
+    min-width: 100px;
+    margin: 5px 0;
+    border: var(--border-accent);
+    cursor: pointer;
+}
+
+.button.fullWidth {
+    width: 100%;
+}
+
+.button:hover {
+    scale: 1.01;
+}

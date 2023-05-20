@@ -1,0 +1,20 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.convertContainer {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  background: var(--bg-l1);
+  border: var(--border);
+}
+
+.convertContainer> p {
+  margin: 6px;
+}
