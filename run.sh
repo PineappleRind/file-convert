@@ -1,1 +1,0 @@
-PORT=3000;bun run api/src/main.ts
