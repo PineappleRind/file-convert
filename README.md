@@ -1,6 +1,11 @@
 # file-convert
 Web app to convert between media formats (e.g. images, audio, video) using FFMpeg
 
+originally for personal use because it's actually really useful for me. here are some pros
+- better than fiddling with ffmpeg in terminal
+- better than having to wait for your file to upload to some remote server before conversion
+- better than having to wait for your file to be converted on some remote server that seems really slow
+
 ## Running locally
 ### Dependencies
 - [ffmpeg](https://ffmpeg.org/)
