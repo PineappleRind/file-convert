@@ -1,12 +1,4 @@
-import {
-	Component,
-	Match,
-	Switch,
-	createComputed,
-	createEffect,
-	createReaction,
-	createSignal,
-} from "solid-js";
+import { Component, Match, Switch, createEffect, createSignal } from "solid-js";
 
 import ExtDropdown from "./components/ExtDropdown.jsx";
 import FileChoose from "./components/FileChoose.jsx";
@@ -15,6 +7,7 @@ import styles from "./css/App.module.css";
 import { mimeTypeToExt as map } from "./globals.js";
 
 const fetchURL = "http://localhost:8000";
+
 enum AppState {
 	ChooseFile,
 	ReadyToConvert,

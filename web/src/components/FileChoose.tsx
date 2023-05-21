@@ -1,10 +1,12 @@
 import { Setter, Show, createSignal } from "solid-js";
-import { exts } from "../globals";
+import { conversions } from "../globals";
 import styles from "../css/FileChoose.module.css";
 
 interface FileChooseProps {
 	onFileChoose: Setter<File | null>;
 }
+
+const { extensions } = conversions;
 
 export default ({ onFileChoose: signal }: FileChooseProps) => {
 	const [file, setFile] = createSignal<File | null>(null);
@@ -23,7 +25,8 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 
 	function validateFile(file: File) {
 		const [type] = file.type.split("/");
-		return !!exts[type];
+		console.log(type);
+		return !!extensions[type];
 	}
 
 	function handleDrop(e: DragEvent) {
@@ -69,13 +72,18 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 			<Show
 				when={file()}
 				fallback={
-					<label
-						ondragenter={(e) => e.stopPropagation()}
-						class={styles.fileChooseButton}
-						for="fileUpload"
-					>
-						Choose a file...
-					</label>
+					<>
+						<label
+							ondragenter={(e) => e.stopPropagation()}
+							class={styles.fileChooseButton}
+							for="fileUpload"
+						>
+							Choose a file...
+						</label>
+						<small style={{ opacity: 0.4 }}>
+							<i>or drop one in here</i>
+						</small>
+					</>
 				}
 			>
 				<p class={styles.fileType}>{file()!.type}</p>

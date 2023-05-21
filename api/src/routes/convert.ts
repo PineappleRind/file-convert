@@ -3,12 +3,20 @@ import { Context } from "hono";
 import { join } from "path";
 import ffmpeg from "fluent-ffmpeg";
 
-import { seedID, getFileLocationOnServer } from "../utils";
+import { seedID, getFileLocationOnServer, findTypeFromExt } from "../utils";
 import { CONVERTED_DIR_NAME, rootPath } from "../globals";
+import { extensions, legalConversions } from "./valid-conversions";
 
 export default async function convert(c: Context) {
 	const params = c.req.param();
 	const { ext, targetExt } = params;
+	const conversionValidity = isValidConversion(ext, targetExt);
+	if (!conversionValidity.valid)
+		return Response.json(
+			{ message: conversionValidity.message },
+			{ status: 400 },
+		);
+
 	const body = await c.req.formData();
 	const file = body.get("file");
 
@@ -44,6 +52,33 @@ export default async function convert(c: Context) {
 	);
 
 	return Response.json({ id });
+}
+
+function isValidConversion(ext: string, targetExt: string) {
+	const type = findTypeFromExt(ext);
+	const targetType = findTypeFromExt(targetExt);
+	if (!type || !targetType)
+		return {
+			valid: false,
+			message: `Invalid or unsupported extension(s) ${[
+				!type ? ext : "",
+				!targetType ? targetExt : "",
+			].join(", ")}`,
+		};
+	// Sort so that we can guarantee the same order as `legalConversions`
+	let conversion = [type, targetType].slice().sort();
+	// we join so that this is a string comparison (array comparisons don't work)
+	if (
+		!legalConversions.some(
+			(compareConversion) =>
+				conversion.join(",") !== compareConversion.slice().sort().join(","),
+		)
+	)
+		return {
+			valid: false,
+			message: `Cannot convert from ${type} to ${targetType}`,
+		};
+	return { valid: true };
 }
 
 async function convertFile(

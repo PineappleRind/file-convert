@@ -2,10 +2,12 @@
     padding: 20px;
     margin: 5px;
     display: block;
-    min-width: 100px;
+    min-width: 160px;
     min-height: 40px;
     border: 2px dashed var(--border);
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .fileChoose.dragActive {

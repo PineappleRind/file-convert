@@ -1,18 +1,14 @@
 type AvailableExtensions = {
-	[type: string]: string[];
+	extensions: {
+		[type: string]: string[];
+	};
+	legalConversions: string[][];
 };
 
 export const apiURL = `http://localhost:8000`;
-export const exts: AvailableExtensions = await (
+export const conversions: AvailableExtensions = await (
 	await fetch(`${apiURL}/valid-conversions`)
 ).json();
-console.log(exts);
-export const legalConversions = [
-	["audio", "audio"],
-	["video", "video"],
-	["audio", "video"],
-	["image", "image"],
-];
 
 // Some MIME types do not accurately
 // reflect the file extension.
