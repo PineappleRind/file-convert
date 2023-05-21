@@ -8,8 +8,8 @@
   --bg-l0: hsl(340, 52%, 85%);
   --bg-l1: hsl(340, 52%, 90%);
   --bg-l2: hsl(340, 52%, 95%);
-  --border: 1px solid hsl(340, 27%, 62%);
-  --border-focus: 1px solid hsl(340, 27%, 42%);
+  --border: hsl(340, 27%, 62%);
+  --border-focus: hsl(340, 27%, 42%);
   --border-accent: 1px solid hsl(340, 100%, 31%);
 }
 

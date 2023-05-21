@@ -1,10 +1,10 @@
 .extDropdown select {
     padding: 8px 10px;
     border-radius: 20px;
-    border: var(--border);
+    border: 1px solid var(--border);
     background: var(--bg-l2);
 }
 
 .extDropdown select:hover {
-    border: var(--border-focus);
+    border: 1px solid var(--border-focus);
 }

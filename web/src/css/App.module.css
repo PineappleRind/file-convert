@@ -23,7 +23,7 @@ body {
   padding: 10px;
   border-radius: 20px;
   background: var(--bg-l1);
-  border: var(--border);
+  border: 1px solid var(--border);
 }
 
 .convertContainer>p {
