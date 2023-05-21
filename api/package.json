@@ -2,10 +2,13 @@
   "name": "file-convert-api",
   "module": "index.ts",
   "devDependencies": {
-    "bun-types": "^0.6.2"
+    "@types/fluent-ffmpeg": "^2.1.21",
+    "bun-types": "^0.6.2",
+    "rome": "^12.1.2"
   },
   "type": "module",
   "dependencies": {
+    "fluent-ffmpeg": "^2.1.2",
     "hono": "^3.1.8"
   }
 }

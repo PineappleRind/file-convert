@@ -8,6 +8,8 @@
     margin: 5px 0;
     border: var(--border-accent);
     cursor: pointer;
+    color: white;
+    transition: 0.2s;
 }
 
 .button.fullWidth {
@@ -16,4 +18,8 @@
 
 .button:hover {
     scale: 1.01;
+}
+
+.button:active {
+    scale: 0.99;
 }

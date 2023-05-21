@@ -6,6 +6,17 @@ body {
   height: 100dvh;
 }
 
+.transitionContainer {
+  transition: 0.2s;
+  opacity: 1;
+}
+
+.transitionContainer.transitioning {
+  opacity: 0;
+  scale: 0.99;
+  transform: 3px 0;
+}
+
 .convertContainer {
   display: flex;
   align-items: center;
@@ -15,6 +26,6 @@ body {
   border: var(--border);
 }
 
-.convertContainer> p {
+.convertContainer>p {
   margin: 6px;
 }

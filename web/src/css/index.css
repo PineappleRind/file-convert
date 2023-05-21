@@ -4,23 +4,24 @@
 }
 
 :root {
-  --accent: hsl(28, 100%, 50%);
-  --bg-l0: hsl(28, 52%, 80%);
-  --bg-l1: hsl(28, 64%, 84%);
-  --bg-l2: hsl(28, 76%, 88%);
-  --border: 1px solid hsl(20, 27%, 62%);
-  --border-focus: 1px solid hsl(20, 27%, 42%);
-  --border-accent: 1px solid hsl(28, 100%, 43%);
+  --accent: hsl(340, 100%, 50%);
+  --bg-l0: hsl(340, 52%, 85%);
+  --bg-l1: hsl(340, 52%, 90%);
+  --bg-l2: hsl(340, 52%, 95%);
+  --border: 1px solid hsl(340, 27%, 62%);
+  --border-focus: 1px solid hsl(340, 27%, 42%);
+  --border-accent: 1px solid hsl(340, 100%, 31%);
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: Aspekta, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-l0);
+  font-weight: 450;
 }
 
 code {

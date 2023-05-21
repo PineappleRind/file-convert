@@ -1,43 +1,74 @@
 import { exists, mkdir } from "fs/promises";
 import { Context } from "hono";
 import { join } from "path";
-import { spawn } from "bun";
-import { seedID } from "../utils";
+import ffmpeg from "fluent-ffmpeg";
 
-const CONVERTED_DIR_NAME = "converted";
+import { seedID, getFileLocationOnServer } from "../utils";
+import { CONVERTED_DIR_NAME, rootPath } from "../globals";
 
 export default async function convert(c: Context) {
-    const params = c.req.param();
-    const { ext, targetExt } = params,
-        body = await c.req.formData(),
-        file = body.get("file");
+	const params = c.req.param();
+	const { ext, targetExt } = params;
+	const body = await c.req.formData();
+	const file = body.get("file");
 
-    if (!file || !(file instanceof Blob)) return Response.json({ message: "No file" }, {
-        status: 400
-    });
+	if (!file || !(file instanceof Blob))
+		return Response.json(
+			{ message: "No file" },
+			{
+				status: 400,
+			},
+		);
 
-    let projectRootPath = Bun.fileURLToPath(new URL(join(import.meta.url, "../../..")));
-    // Create it if it doesn't exist
-    if (!(await exists(join(projectRootPath, CONVERTED_DIR_NAME)))) await mkdir(join(projectRootPath, CONVERTED_DIR_NAME));
-    projectRootPath = join(projectRootPath, CONVERTED_DIR_NAME);
+	// Create it if it doesn't exist
+	if (!(await exists(join(rootPath, CONVERTED_DIR_NAME))))
+		await mkdir(join(rootPath, CONVERTED_DIR_NAME));
 
-    const filename = `${seedID(Date.now().toString())}.${ext}`,
-        newFilename = join(projectRootPath, filename).split(".").slice(0, -1).join(".") + "." + targetExt;
-    await Bun.write(join(projectRootPath, filename), file);
-    await convertFile(
-        ext,
-        targetExt,
-        join(projectRootPath, filename),
-        newFilename
-    );
+	const path = join(rootPath, CONVERTED_DIR_NAME);
+	const id = seedID(Date.now().toString());
+	const filename = join(path, `${id}.${ext}`);
+	const newFilename = `${filename
+		.split(".")
+		.slice(0, -1)
+		.join(".")}.${targetExt}`;
 
-    return Response.json({
-        filename: `${new URL(c.req.raw.url).origin}/${CONVERTED_DIR_NAME}/${newFilename.split("/").slice(-1)}`
-    })
+	conversionState[id] ??= {} as ConversionState;
+	conversionState[id].target = targetExt;
+
+	await Bun.write(filename, file);
+	convertFile(ext, targetExt, filename, newFilename, id);
+
+	conversionState[id].filename = getFileLocationOnServer(
+		newFilename,
+		c.req.url,
+	);
+
+	return Response.json({ id });
 }
 
-async function convertFile(from: string, to: string, file: string, newFile: string) {
-    spawn({
-        cmd: ["ffmpeg", `-i`, file, `-progress`, `/dev/stdout`, newFile]
-    })
+async function convertFile(
+	from: string,
+	to: string,
+	file: string,
+	newFile: string,
+	id: string,
+) {
+	ffmpeg()
+		.input(file)
+		.on("progress", (progress) => {
+			conversionState[id].percent = progress.percent;
+		})
+		.on("end", () => {
+			conversionState[id].completed = true;
+		})
+		.saveToFile(newFile);
 }
+
+type ConversionState = {
+	percent: number;
+	filename: string;
+	completed?: boolean;
+	target: string;
+};
+type ConversionStateRecord = Record<string, ConversionState>;
+export const conversionState: ConversionStateRecord = {};
