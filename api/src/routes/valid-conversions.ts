@@ -3,7 +3,7 @@ import { Context } from "hono";
 export const extensions = {
 	audio: ["mp3", "m4a", "wav", "ogg"],
 	video: ["mov", "mp4", "mpg", "avi"],
-	image: ["png", "jpg", "gif" /*"ico"*/],
+	image: ["webp", "png", "jpeg", "gif" /*"ico"*/],
 };
 
 export const legalConversions = [

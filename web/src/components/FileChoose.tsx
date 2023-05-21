@@ -31,6 +31,7 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 
 	function handleDrop(e: DragEvent) {
 		e.preventDefault();
+		fileDropArea.classList.remove(styles.dragActive);
 		if (e.dataTransfer?.items) {
 			// Use DataTransferItemList interface to access the file(s)
 			[...e.dataTransfer.items].forEach((item, i) => {
@@ -67,7 +68,7 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 			ondragleave={handleDragLeave}
 			ondragend={handleDragLeave}
 			ondrop={handleDrop}
-			ref={fileDropArea}
+			ref={fileDropArea!}
 		>
 			<Show
 				when={file()}
@@ -102,6 +103,7 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 						Array.from((e.target as HTMLInputElement).files as FileList),
 					)
 				}
+				accept={Object.entries(extensions).map(([_, types]) => types).flat().map((ext) => `.${ext}`).join(", ")}
 				class={styles.nativeFileInput}
 				ref={fileInput}
 			></input>

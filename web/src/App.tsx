@@ -1,4 +1,4 @@
-import { Component, Match, Switch, createEffect, createSignal } from "solid-js";
+import { Component, Match, Signal, Switch, createEffect, createSignal } from "solid-js";
 
 import ExtDropdown from "./components/ExtDropdown.jsx";
 import FileChoose from "./components/FileChoose.jsx";
@@ -14,6 +14,13 @@ enum AppState {
 	Converting,
 	FinishedConverting,
 }
+
+type ConversionState = {
+	percent: number;
+	filename: string;
+	completed?: boolean;
+	target: string;
+};
 
 const App: Component = () => {
 	const [chosenFile, setChosenFile] = createSignal<Blob | null>(null);
@@ -39,14 +46,14 @@ const App: Component = () => {
 	}
 
 	let fileID: string | null = null,
-		[conversionStatus, setConversionStatus] = createSignal({ percent: 0 });
+		[conversionStatus, setConversionStatus]: Signal<ConversionState | null> = createSignal(null);
 
 	async function submit() {
 		if (!chosenFile() || !targetExt()) return alert("No file selected");
 		const formData = new FormData();
 		formData.append("file", chosenFile() || "");
 		let req = await fetch(
-			`${fetchURL}/convert/${getExt(chosenFile().type)}/${targetExt()}`,
+			`${fetchURL}/convert/${getExt(chosenFile()!.type)}/${targetExt()}`,
 			{
 				method: "POST",
 				body: formData,
@@ -69,7 +76,7 @@ const App: Component = () => {
 	}
 	let fileChooser = <FileChoose onFileChoose={setChosenFile} />;
 	return (
-		<div ref={transitionContainer} class={styles.transitionContainer}>
+		<div ref={transitionContainer!} class={styles.transitionContainer}>
 			<Switch>
 				<Match when={appState() === AppState.ChooseFile}>{fileChooser}</Match>
 				<Match when={appState() === AppState.ReadyToConvert && chosenFile()}>
@@ -86,16 +93,16 @@ const App: Component = () => {
 						Go
 					</Button>
 				</Match>
-				<Match when={appState() === AppState.Converting}>
+				<Match when={appState() === AppState.Converting && conversionStatus()}>
 					<div class={styles.convertContainer} style={{ display: "block" }}>
 						<label for="conversionProgress">
-							Converting... <code>{conversionStatus().percent}%</code>
+							Converting... <code>{conversionStatus()!.percent}%</code>
 						</label>
 						<br></br>
 						<progress
 							id="conversionProgress"
 							max="100"
-							value={conversionStatus().percent}
+							value={conversionStatus()!.percent}
 						></progress>
 					</div>
 				</Match>
@@ -103,7 +110,7 @@ const App: Component = () => {
 					when={
 						appState() === AppState.FinishedConverting &&
 						conversionStatus() &&
-						conversionStatus().completed
+						conversionStatus()!.completed
 					}
 				>
 					<div class={styles.convertContainer} style={{ display: "block" }}>
@@ -116,7 +123,7 @@ const App: Component = () => {
 						<Button
 							fullWidth
 							onClick={() =>
-								(window.location.href = conversionStatus().filename)
+								(window.location.href = conversionStatus()!.filename)
 							}
 						>
 							Download
