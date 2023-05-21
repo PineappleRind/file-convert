@@ -1,4 +1,11 @@
-import { Component, Match, Signal, Switch, createEffect, createSignal } from "solid-js";
+import {
+	Component,
+	Match,
+	Signal,
+	Switch,
+	createEffect,
+	createSignal,
+} from "solid-js";
 
 import ExtDropdown from "./components/ExtDropdown.jsx";
 import FileChoose from "./components/FileChoose.jsx";
@@ -46,7 +53,8 @@ const App: Component = () => {
 	}
 
 	let fileID: string | null = null,
-		[conversionStatus, setConversionStatus]: Signal<ConversionState | null> = createSignal(null);
+		[conversionStatus, setConversionStatus]: Signal<ConversionState | null> =
+			createSignal(null);
 
 	async function submit() {
 		if (!chosenFile() || !targetExt()) return alert("No file selected");

@@ -103,7 +103,11 @@ export default ({ onFileChoose: signal }: FileChooseProps) => {
 						Array.from((e.target as HTMLInputElement).files as FileList),
 					)
 				}
-				accept={Object.entries(extensions).map(([_, types]) => types).flat().map((ext) => `.${ext}`).join(", ")}
+				accept={Object.entries(extensions)
+					.map(([_, types]) => types)
+					.flat()
+					.map((ext) => `.${ext}`)
+					.join(", ")}
 				class={styles.nativeFileInput}
 				ref={fileInput}
 			></input>

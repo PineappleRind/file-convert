@@ -66,8 +66,9 @@
         <br>
         <p>
             <span class="dimmer">/<span class="accent">convert</span>/:<span class="dim">ext</span></span> <span
-                class="dimmer">·</span> <span class="dimmer smaller">Append a file. Responds with an ID.
-                You can use this for a request to
+                class="dimmer">·</span> <span class="dimmer smaller">Begin the process of converting a file. Append the
+                file using a `file` field on FormData. Responds with an ID once approved.
+                You can use the id for a request to
                 /status</span>
         </p>
         <p>
@@ -75,11 +76,12 @@
                 class="dimmer">·</span> <span class="dimmer smaller">Responds with JSON containing status,
                 id, and percent fields. If
                 complete, responds with a newly created URL to the file, which (importantly) <b>does not
-                    expire</b>.</span>
+                    expire</b> (yet).</span>
         </p>
         <p>
             <span class="dimmer">/<span class="accent">valid-conversions</span> <span class="dimmer">·</span> <span
-                    class="dimmer smaller">Gets a list of all extensions, grouped by media type, and which types you can
+                    class="dimmer smaller">Gets a list of all extensions, grouped by media type, and a list of which
+                    types you can
                     convert between.</span>
         </p>
     </main>

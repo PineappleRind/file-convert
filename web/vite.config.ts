@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
-import {optimizeCssModules} from 'vite-plugin-optimize-css-modules';
+import { optimizeCssModules } from "vite-plugin-optimize-css-modules";
 
 export default defineConfig({
-	plugins: [solidPlugin(),optimizeCssModules()],
+	plugins: [solidPlugin(), optimizeCssModules()],
 	server: {
 		port: 3000,
 	},
