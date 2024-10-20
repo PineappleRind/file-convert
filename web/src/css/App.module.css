@@ -4,6 +4,7 @@ body {
   justify-content: center;
   flex-direction: column;
   height: 100dvh;
+  font-variant-numeric: tabular-nums;
 }
 
 .transitionContainer {
@@ -20,12 +21,35 @@ body {
 .convertContainer {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 15px;
   border-radius: 20px;
   background: var(--bg-l1);
   border: 1px solid var(--border);
+  min-width: 20ch;
+  text-align: center;
 }
 
 .convertContainer>p {
   margin: 6px;
+}
+
+.conversionProgress {
+  width: 100%;
+  height: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-l2);
+  border-radius: 99px;
+  position: relative;
+  overflow: clip;
+}
+
+.conversionProgress::after {
+  content: "";
+  position: absolute;
+  transition: width 0.2s;
+  width: calc(var(--progress) * 100% + 10px);
+  height: 100%;
+  background: var(--accent);
+  left: -10px;
+  border-radius: 99px;
 }

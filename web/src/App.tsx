@@ -11,7 +11,7 @@ import ExtDropdown from "./components/ExtDropdown.jsx";
 import FileChoose from "./components/FileChoose.jsx";
 import Button from "./components/Button.jsx";
 import styles from "./css/App.module.css";
-import { mimeTypeToExt as map } from "./globals.js";
+import { mimeTypeToExt } from "./globals.js";
 
 const fetchURL = "http://localhost:8000";
 
@@ -72,7 +72,6 @@ const App: Component = () => {
 		startTime = Date.now();
 		setAppState(AppState.Converting);
 		pollStatus();
-		// setAppState(AppState.FinishedConverting);
 	}
 
 	async function pollStatus() {
@@ -103,15 +102,19 @@ const App: Component = () => {
 				</Match>
 				<Match when={appState() === AppState.Converting && conversionStatus()}>
 					<div class={styles.convertContainer} style={{ display: "block" }}>
-						<label for="conversionProgress">
-							Converting... <code>{conversionStatus()!.percent}%</code>
-						</label>
-						<br></br>
-						<progress
-							id="conversionProgress"
-							max="100"
-							value={conversionStatus()!.percent}
-						></progress>
+						Converting
+						<h3>
+							<label for="conversionProgress">
+								{conversionStatus()?.percent?.toPrecision(3)}%
+							</label>
+						</h3>
+						<br />
+						<div
+							class={styles.conversionProgress}
+							style={{
+								"--progress": (conversionStatus()?.percent || 0) / 100 || 0,
+							}}
+						></div>
 					</div>
 				</Match>
 				<Match
@@ -122,21 +125,19 @@ const App: Component = () => {
 					}
 				>
 					<div class={styles.convertContainer} style={{ display: "block" }}>
-						<h3>
-							Completed{" "}
-							<span style={{ opacity: 0.4 }}>
-								in {((Date.now() - startTime) / 1000).toFixed(1)}s
-							</span>
-						</h3>
-						<Button
-							fullWidth
-							onClick={() =>
-								(window.location.href = conversionStatus()!.filename)
-							}
-						>
-							Download
-						</Button>
+						<h3>Success</h3>
+						<span style={{ opacity: 0.4 }}>
+							Converted in {((Date.now() - startTime) / 1000).toFixed(1)}s
+						</span>
 					</div>
+					<Button
+						fullWidth
+						onClick={() =>
+							(window.location.href = conversionStatus()!.filename)
+						}
+					>
+						Download
+					</Button>
 				</Match>
 			</Switch>
 		</div>
@@ -146,7 +147,7 @@ const App: Component = () => {
 function getExt(mimeType: string): string {
 	const [_, ext] = mimeType.split("/");
 	console.log(mimeType);
-	return map[ext as keyof typeof map] ? map[ext as keyof typeof map] : ext;
+	return mimeTypeToExt(ext);
 }
 
 export default App;

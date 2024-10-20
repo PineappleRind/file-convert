@@ -44,7 +44,11 @@ export default async function convert(c: Context) {
 	conversionState[id].target = targetExt;
 
 	await Bun.write(filename, file);
-	convertFile(ext, targetExt, filename, newFilename, id);
+	try {
+		convertFile(filename, newFilename, id);
+	} catch (e) {
+		return Response.json({ error: e });
+	}
 
 	conversionState[id].filename = getFileLocationOnServer(
 		newFilename,
@@ -81,13 +85,7 @@ function isValidConversion(ext: string, targetExt: string) {
 	return { valid: true };
 }
 
-async function convertFile(
-	from: string,
-	to: string,
-	file: string,
-	newFile: string,
-	id: string,
-) {
+async function convertFile(file: string, newFile: string, id: string) {
 	ffmpeg()
 		.input(file)
 		.on("progress", (progress) => {
@@ -96,13 +94,16 @@ async function convertFile(
 		.on("end", () => {
 			conversionState[id].completed = true;
 		})
+		.on("error", (err, stdout, stderr) => {
+			conversionState[id].completed = err;
+		})
 		.saveToFile(newFile);
 }
 
 type ConversionState = {
 	percent: number;
 	filename: string;
-	completed?: boolean;
+	completed?: boolean | string;
 	target: string;
 };
 type ConversionStateRecord = Record<string, ConversionState>;

@@ -12,7 +12,11 @@ export const conversions: AvailableExtensions = await (
 
 // Some MIME types do not accurately
 // reflect the file extension.
-export const mimeTypeToExt = {
-	mpeg: "mp3",
-	quicktime: "mov",
-};
+export function mimeTypeToExt(type: string) {
+	const map: Record<string, string> = {
+		mpeg: "mp3",
+		quicktime: "mov",
+		"x-m4a": "m4a",
+	};
+	return map[type || ""] || type;
+}

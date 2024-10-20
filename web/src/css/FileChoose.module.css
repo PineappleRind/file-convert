@@ -1,23 +1,32 @@
 .fileChoose {
     padding: 20px;
-    margin: 5px;
+    margin-inline: 15px;
     display: block;
-    min-width: 160px;
-    min-height: 40px;
-    border: 2px dashed var(--border);
-    border-radius: 20px;
+    min-width: 17ch;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
-.fileChoose.dragActive {
-    border: 2px dashed var(--accent);
-    padding: 22px;
-    margin: -2px;
+.fileChoose::after {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed var(--border);
+    border-radius: 20px;
+    content: "";
+    transition: inset 0.2s;
+    pointer-events: none;
 }
+
+.fileChoose.dragActive::after {
+    border: 2px dashed var(--accent);
+    inset: -5px;
+}
+
 .fileChoose.dragActive * {
     pointer-events: none;
 }
+
 .nativeFileInput {
     display: none;
 }
@@ -26,7 +35,7 @@
     border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--bg-l2);
-    font-size: 11pt;
+    font-size: 15px;
     padding: 4px 8px;
 }
 
@@ -36,7 +45,6 @@
 }
 
 .fileType {
-    text-align: center;
     text-transform: uppercase;
     letter-spacing: .1px;
     font-weight: 300;

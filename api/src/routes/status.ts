@@ -8,6 +8,9 @@ import { getFileLocationOnServer } from "../utils";
 export default async function status(c: Context) {
 	const { id } = c.req.param();
 	const state = conversionState[id];
+
+	if (typeof state?.completed === "string")
+		return Response.json({ error: state.completed });
 	const convertedDir = join(rootPath, CONVERTED_DIR_NAME);
 	const files = await readdir(convertedDir);
 	// If the file exists, and the conversion is completed...
@@ -34,6 +37,6 @@ export default async function status(c: Context) {
 		);
 
 	return Response.json({
-		percent: (state.percent || 0).toFixed(3),
+		percent: state.percent || 0,
 	});
 }

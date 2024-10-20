@@ -1,6 +1,6 @@
 import { For, Setter, Show, createComputed, createSignal } from "solid-js";
 import styles from "../css/ExtDropdown.module.css";
-import { conversions } from "../globals";
+import { conversions, mimeTypeToExt } from "../globals";
 
 const { extensions } = conversions;
 interface ExtDropdownProps {
@@ -22,6 +22,11 @@ export default (props: ExtDropdownProps) => {
 		props.valueBroadcaster(ext);
 	}
 
+	function extensionLookup() {
+		const type = mimeTypeToExt(selectedFile()?.type.split("/")[1] || "");
+		return extensions[selectedFileType].filter((ext) => ext !== type);
+	}
+
 	props.valueBroadcaster((extensions[selectedFileType] || [])[0]);
 
 	return (
@@ -36,7 +41,7 @@ export default (props: ExtDropdownProps) => {
 					}
 				>
 					{/* I am aware this will show nothing with an invalid type */}
-					<For each={extensions[selectedFileType]}>
+					<For each={extensionLookup()}>
 						{(ext) => <option value={ext}>{ext.toUpperCase()}</option>}
 					</For>
 				</Show>
